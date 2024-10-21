@@ -69,8 +69,8 @@ input[type="text"],
 input[type="number"],
 input[type="date"],
 input[type="time"] {
-  width: 100%;
-  padding: 10px;
+  width: 90%;
+  padding: 10px 17px;
   margin-top: 5px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -101,32 +101,126 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* Estilização da tabela */
 table {
   border-collapse: collapse;
-  width: 100%; /* Optional for full-width tables */
+  width: 100%;
+  margin: 20px 0;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilização do cabeçalho */
 th {
-  background-color: #ddd;
+  background-color: #4CAF50; /* Cor de fundo verde */
+  color: white; /* Texto em branco */
   font-weight: bold;
-  padding: 5px 10px; /* Adjust padding as needed */
-  /* Optional: text-align: center; */
+  padding: 10px 15px;
+  text-align: center;
+  text-transform: uppercase; /* Texto em maiúsculas */
+  letter-spacing: 0.05em; /* Espaçamento entre letras */
 }
 
+/* Estilização das células */
 td {
-  padding: 5px 10px; /* Adjust padding as needed */
-  /* Optional: text-align: left; */
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Separação das linhas */
+  text-align: center; /* Centralização do texto */
 }
 
+/* Estilização dos botões */
 button {
-  /* Customize button styles here */
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  padding: 8px 15px;
+  background-color: #4CAF50; /* Cor de fundo verde */
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  text-transform: uppercase; /* Texto em maiúsculas */
 }
 
+/* Efeito hover no botão */
 button:hover {
-  /* Customize button hover effects here */
-  background-color: #eee;
+  background-color: #45a049; /* Cor de fundo ao passar o mouse */
+}
+
+/* Estilização para pequenos ajustes no layout em telas menores */
+@media screen and (max-width: 600px) {
+  table, th, td {
+    display: block;
+    width: 100%;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+}
+
+
+.restaurant-layout {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  border: 2px solid #333;
+  margin: 20px auto;
+  background-color: #f0f0f0;
+}
+
+.entrance {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #d4e157;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.counter {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #ff7043;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.tables {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.table {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-color: #4caf50;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.table:hover {
+  background-color: #66bb6a;
+}
+
+.table.reserved {
+  background-color: #f44336;
+  cursor: not-allowed;
+}
+
+.table.selected {
+  background-color: #ffeb3b;
 }
