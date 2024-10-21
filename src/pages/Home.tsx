@@ -32,7 +32,13 @@ const Home: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    // Verifica se uma mesa foi selecionada
+    if (selectedTableId === null) {
+      setError('Por favor, selecione uma mesa antes de fazer a reserva.');
+      return; // Interrompe o envio se nenhuma mesa foi selecionada
+    }
+  
     const reservation = {
       name,
       phone,
@@ -41,11 +47,11 @@ const Home: React.FC = () => {
       reservation_time: time,
       table_id: selectedTableId,
     };
-
+  
     try {
       await axios.post('http://localhost:5000/reservations', reservation);
       alert('Reserva criada com sucesso!');
-
+  
       // Limpar o formulário
       setName('');
       setPhone('');
@@ -53,7 +59,7 @@ const Home: React.FC = () => {
       setDate('');
       setTime('');
       setSelectedTableId(null);
-
+  
       // Recarregar mesas após uma nova reserva
       fetchTables();
     } catch (error) {
@@ -61,6 +67,7 @@ const Home: React.FC = () => {
       setError('Erro ao criar reserva, tente novamente.');
     }
   };
+  
 
   const handleTableClick = (id: number, status: string) => {
     if (status === 'disponível') {
