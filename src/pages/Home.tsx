@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import '../App.css';
+import TableSelector from '../components/TableSelector';
 
 const Home: React.FC = () => {
   const [name, setName] = useState('');
@@ -8,37 +9,28 @@ const Home: React.FC = () => {
   const [peopleCount, setPeopleCount] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [tables, setTables] = useState<any[]>([]);
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchTables = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:5000/seats');
-      setTables(response.data); // Carregar todas as mesas
-    } catch (error) {
-      console.error('Erro ao buscar mesas:', error);
-      setError('Erro ao carregar mesas, tente novamente.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTables();
-  }, []);
+  const tables = [
+    { id: 1, table_number: 1, capacity: 4, position_x: 200, position_y: 550, status: 'disponível' },
+    { id: 2, table_number: 2, capacity: 4, position_x: 450, position_y: 550, status: 'disponível' },
+    { id: 3, table_number: 3, capacity: 6, position_x: 600, position_y: 550, status: 'disponível' },
+    { id: 4, table_number: 4, capacity: 2, position_x: 200, position_y: 700, status: 'disponível' },
+    { id: 5, table_number: 5, capacity: 2, position_x: 450, position_y: 700, status: 'reservada' },
+    { id: 6, table_number: 6, capacity: 6, position_x: 600, position_y: 700, status: 'disponível' },
+    { id: 7, table_number: 7, capacity: 8, position_x: 850, position_y: 700, status: 'disponível' },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Verifica se uma mesa foi selecionada
+
     if (selectedTableId === null) {
       setError('Por favor, selecione uma mesa antes de fazer a reserva.');
-      return; // Interrompe o envio se nenhuma mesa foi selecionada
+      return;
     }
-  
+
     const reservation = {
       name,
       phone,
@@ -47,31 +39,20 @@ const Home: React.FC = () => {
       reservation_time: time,
       table_id: selectedTableId,
     };
-  
+
     try {
       await axios.post('http://localhost:5000/reservations', reservation);
       alert('Reserva criada com sucesso!');
-  
-      // Limpar o formulário
       setName('');
       setPhone('');
       setPeopleCount('');
       setDate('');
       setTime('');
       setSelectedTableId(null);
-  
-      // Recarregar mesas após uma nova reserva
-      fetchTables();
+
     } catch (error) {
       console.error('Erro ao criar reserva:', error);
       setError('Erro ao criar reserva, tente novamente.');
-    }
-  };
-  
-
-  const handleTableClick = (id: number, status: string) => {
-    if (status === 'disponível') {
-      setSelectedTableId(id);
     }
   };
 
@@ -135,28 +116,12 @@ const Home: React.FC = () => {
         <button type="submit">Reservar</button>
       </form>
 
-      <div className="restaurant-layout">
-        {/* Simulação da entrada e balcão */}
-        <div className="entrance">Entrada</div>
-        <div className="counter">Balcão</div>
-
-        {/* Renderização dinâmica das mesas */}
-        <div className="tables">
-          {tables.map((table) => (
-            <div
-              key={table.id}
-              className={`table ${table.status === 'disponível' ? '' : 'reserved'} ${selectedTableId === table.id ? 'selected' : ''}`}
-              style={{
-                left: `${table.position_x}px`,
-                top: `${table.position_y}px`,
-              }}
-              onClick={() => handleTableClick(table.id, table.status)}
-            >
-              Mesa {table.table_number} ({table.capacity} pessoas)
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Utilize o componente TableSelector */}
+      <TableSelector
+        tables={tables}
+        selectedTableId={selectedTableId}
+        onTableSelect={setSelectedTableId}
+      />
     </div>
   );
 };
